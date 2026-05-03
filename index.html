@@ -1027,6 +1027,12 @@ img{max-width:100%;height:auto}
         style="background:#1877f2">
         👍 5.4K Seguidores
       </a>
+      <a href="https://maps.app.goo.gl/LVdPZ4JL218ASStT7" target="_blank" rel="noopener"
+        aria-label="Google Maps — Puerto Costero"
+        class="social-btn inline-flex items-center gap-2 px-6 py-3 rounded-full font-mono text-xs uppercase tracking-wider text-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+        style="background:linear-gradient(135deg,#009ea6,#00c6d0)">
+        🗺️ Google Maps
+      </a>
     </div>
   </div>
 </section>
@@ -1057,11 +1063,7 @@ img{max-width:100%;height:auto}
       <div class="flex items-center gap-3"><span class="font-mono text-xs w-4" style="color:rgba(245,230,163,.45)">2</span><div class="flex-1 h-2 rounded-full" style="background:rgba(255,255,255,.08)"><div class="rb h-full" style="width:2%"></div></div><span class="font-mono text-xs w-8" style="color:rgba(245,230,163,.45)">2%</span></div>
     </div>
     <p class="reviews__count font-mono text-xs italic mb-4" style="color:rgba(245,230,163,.3)"><span data-i18n="reviews_based">Basado en reseñas de Google Maps</span></p>
-    <a id="viewOnGoogleBtn" href="https://maps.app.goo.gl/LVdPZ4JL218ASStT7" target="_blank" rel="noopener"
-      class="btn btn--outline inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-mono text-xs uppercase tracking-wider hover:-translate-y-0.5 transition-all duration-300"
-      style="border:2px solid rgba(0,198,208,.3);color:rgba(245,230,163,.8)">
-      🗺️ Ver en Google Maps
-    </a>
+    
   </div>
 
   <!-- Carousel -->
@@ -1495,11 +1497,12 @@ function initActiveNav(){
 // Dynamic open/closed status (Puerto Rico = UTC-4)
 function updateOpenStatus(){
   var now=new Date();
-  var prOffset=-4*60;
-  var utc=now.getTime()+(now.getTimezoneOffset()*60000);
-  var pr=new Date(utc+(prOffset*60000));
-  var day=pr.getDay();
-  var h=pr.getHours(),m=pr.getMinutes(),mins=h*60+m;
+  // PR is UTC-4, no DST. Use UTC methods to avoid local timezone interference.
+  var utcMs=now.getTime();
+  var prMs=utcMs+(-4*60*60*1000);
+  var pr=new Date(prMs);
+  var day=pr.getUTCDay();
+  var h=pr.getUTCHours(),m=pr.getUTCMinutes(),mins=h*60+m;
   var open=false;
   if(day>=1&&day<=3&&mins>=660&&mins<1260)open=true;
   if((day===4||day===5)&&mins>=660&&mins<1320)open=true;
